@@ -1,0 +1,9 @@
+{
+  "type" : "sql",
+  "targetAttribute" : "toto",
+  "inputAttributes" : [
+    "median_income", "households"
+  ],
+  "partitioningKeys" : ["median_income"],
+  "expression" : "median_income/households"
+}

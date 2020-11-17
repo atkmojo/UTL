@@ -1,0 +1,98 @@
+{
+  "inputs" : [
+    {
+      "name" : "df1",
+      "type" : "hdfs",
+      "path" : "/home/faris/IdeaProjects/lab/src/main/resources/sample_housing.csv",
+      "format" : {
+        "ddl" : "df1.schema",
+        "type" : "parquet"
+      }
+    }
+  ],
+  "stages" : [
+    {
+      "name" : "standardizationIFRS17",
+      "type" :  "STD",
+      "operations" : [
+        "changeCaseToLower"
+      ]
+    },
+    {
+      "name" : "processingIFRS17",
+      "type" :  "PRC",
+      "transitions" : [
+        {
+          "type" : "sql",
+          "targetAttribute" : "toto",
+          "isActivated" : true,
+          "inputAttributes" : [
+            "median_income", "households"
+          ],
+          "partitioningKeys" : ["median_income"],
+          "expression" : "median_income/households"
+        },
+        {
+          "type" : "sql",
+          "targetAttribute" : "toto3",
+          "isActivated" : true,
+          "inputAttributes" : [
+            "median_income", "households", "toto2"
+          ],
+          "partitioningKeys" : ["median_income"],
+          "expression" : "median_income*households*toto2"
+        },
+        {
+          "type" : "sql",
+          "targetAttribute" : "toto2",
+          "isActivated" : true,
+          "inputAttributes" : [
+            "median_income", "households"
+          ],
+          "partitioningKeys" : ["median_income"],
+          "expression" : "median_income-households"
+        },
+        {
+          "type" : "sql",
+          "targetAttribute" : "toto5",
+          "isActivated" : true,
+          "inputAttributes" : [
+            "median_income", "households", "toto6"
+          ],
+          "partitioningKeys" : ["median_income"],
+          "expression" : "median_income-households-toto6"
+        },
+        {
+          "type" : "sql",
+          "targetAttribute" : "toto10",
+          "isActivated" : true,
+          "inputAttributes" : [
+            "median_income", "households", "toto6", "toto7", "toto2"
+          ],
+          "partitioningKeys" : ["median_income"],
+          "expression" : "median_income-households-toto6-toto7"
+        },
+        {
+          "type" : "sql",
+          "targetAttribute" : "toto6",
+          "isActivated" : true,
+          "inputAttributes" : [
+            "toto7", "toto3"
+          ],
+          "partitioningKeys" : ["median_income"],
+          "expression" : "toto2*toto"
+        },
+        {
+          "type" : "sql",
+          "targetAttribute" : "toto7",
+          "isActivated" : true,
+          "inputAttributes" : [
+            "toto2", "toto3"
+          ],
+          "partitioningKeys" : ["median_income"],
+          "expression" : "toto2*toto3"
+        }
+      ]
+    }
+  ]
+}
